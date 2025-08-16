@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { computed } from 'vue'
+    import { computed, ref } from 'vue'
     import InfoIcon from '@/icons/InfoIcon.vue'
     import WarningIcon from '@/icons/WarningIcon.vue'
     import ErrorIcon from '@/icons/ErrorIcon.vue'
@@ -12,6 +12,10 @@
     }
 
     const { type = 'info', hasCloseButton = true } = defineProps<Props>()
+
+    const emits = defineEmits<{
+        (e: 'closed', type: string): void
+    }>()
 
     const alertType = computed(() => {
         return {
@@ -38,14 +42,21 @@
                 return InfoIcon
         }
     })
+
+    const closed = ref(false)
+
+    function closeAlert() {
+        closed.value = true
+        emits('closed', type)
+    }
 </script>
 
 <template>
-  <div role="alert" :class="alertClasses">
+  <div role="alert" :class="alertClasses" v-if="!closed">
     <component :is="iconComponent" />
     <span><slot></slot></span>
     <div v-if="hasCloseButton">
-        <button class="btn btn-sm btn-primary" alt="Close button">
+        <button class="btn btn-sm btn-primary" alt="Close button" @click="closeAlert">
             <CloseIcon />
         </button>
     </div>

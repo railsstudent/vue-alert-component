@@ -2,8 +2,17 @@
 import { ref } from 'vue' 
 import Alert from './Alert.vue'
 
-const hasCloseButton = ref(false);
+const hasCloseButton = ref(true)
 
+// const closedNotification = ref<string[]>([])
+
+function handleClosed(type: string) {
+  alert(`${type} notification closed`)
+}
+
+// function showNotification(type: string) {
+//   return !closedNotification.value.includes(type)
+// }
 </script>
 
 <template>
@@ -14,17 +23,22 @@ const hasCloseButton = ref(false);
       </p>
   </div>
 
-  {{ hasCloseButton }}
-  <Alert type='info' :hasCloseButton="hasCloseButton">
+  <Alert
+    type='info' :hasCloseButton="hasCloseButton" 
+    @closed="handleClosed"
+  >
     New software update available.
   </Alert>
-  <Alert type='success' :hasCloseButton="hasCloseButton">
+  <Alert
+    type='success' :hasCloseButton="hasCloseButton" @closed="handleClosed">
     Your purchase has been confirmed!
   </Alert>
-  <Alert type='warning' :hasCloseButton="hasCloseButton">
+  <Alert
+    type='warning' :hasCloseButton="hasCloseButton" @closed="handleClosed">
     Warning: Invalid email address!
   </Alert>
-  <Alert type='error' :hasCloseButton="hasCloseButton">
+  <Alert 
+    type='error' :hasCloseButton="hasCloseButton" @closed="handleClosed">
     Error! Task failed successfully.
   </Alert>
 </template>
