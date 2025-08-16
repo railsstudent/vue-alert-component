@@ -1,11 +1,53 @@
 <script setup lang="ts">
+    import { computed } from 'vue'
+    import InfoIcon from '@/icons/InfoIcon.vue'
+    import WarningIcon from '@/icons/WarningIcon.vue'
+    import ErrorIcon from '@/icons/ErrorIcon.vue'
+    import SuccessIcon from '@/icons/SuccessIcon.vue'
+    import CloseIcon from '@/icons/CloseIcon.vue'
+    
+    type Props = {
+        type?: string
+        hasCloseButton?: boolean
+    }
+
+    const { type = 'info', hasCloseButton = true } = defineProps<Props>()
+
+    const alertType = computed(() => {
+        return {
+            info: 'alert-info',
+            warning: 'alert-warning',
+            error: 'alert-error',
+            success: 'alert-success'
+        }[type]
+    })
+
+    const alertClasses = computed(() => `alert ${alertType.value || 'alert-info'}`)
+    
+    const iconComponent = computed(() => {
+        switch (type) {
+            case 'info':
+                return InfoIcon
+            case 'success':
+                return SuccessIcon
+            case 'warning':
+                return WarningIcon
+            case 'error':
+                return ErrorIcon
+            default:
+                return InfoIcon
+        }
+    })
 </script>
 
 <template>
-  <div role="alert" class="alert alert-info">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-6 w-6 shrink-0 stroke-current">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>
-    <span>New software update available.</span>
+  <div role="alert" :class="alertClasses">
+    <component :is="iconComponent" />
+    <span><slot></slot></span>
+    <div v-if="hasCloseButton">
+        <button class="btn btn-sm btn-primary" alt="Close button">
+            <CloseIcon />
+        </button>
+    </div>
   </div>
 </template>
