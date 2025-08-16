@@ -1,9 +1,5 @@
 <script setup lang="ts">
     import { computed, ref } from 'vue'
-    import InfoIcon from '@/icons/InfoIcon.vue'
-    import WarningIcon from '@/icons/WarningIcon.vue'
-    import ErrorIcon from '@/icons/ErrorIcon.vue'
-    import SuccessIcon from '@/icons/SuccessIcon.vue'
     import CloseIcon from '@/icons/CloseIcon.vue'
     
     type Props = {
@@ -37,21 +33,7 @@
     })
 
     const alertClasses = computed(() => `alert ${alertColor.value} ${alertStyle.value}`)
-    
-    const iconComponent = computed(() => {
-        switch (type) {
-            case 'info':
-                return InfoIcon
-            case 'success':
-                return SuccessIcon
-            case 'warning':
-                return WarningIcon
-            case 'error':
-                return ErrorIcon
-            default:
-                return InfoIcon
-        }
-    })
+    const icon = computed(() => `${type.charAt(0).toUpperCase() + type.slice(1)}Icon`)
 
     const closed = ref(false)
 
@@ -63,7 +45,7 @@
 
 <template>
   <div role="alert" :class="alertClasses" v-if="!closed">
-    <component :is="iconComponent" />
+    <component :is="icon" />
     <span><slot></slot></span>
     <div v-if="hasCloseButton">
         <button class="btn btn-sm btn-primary" alt="Close button" @click="closeAlert">

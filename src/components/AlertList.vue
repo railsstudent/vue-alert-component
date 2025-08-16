@@ -4,7 +4,7 @@ import Alert from './Alert.vue'
 
 const hasCloseButton = ref(true)
 const style = ref('');
-const types = ref([
+const alerts = ref([
   { 
     type: 'info',
     message: 'New software update available.'
@@ -50,12 +50,12 @@ function handleClosed(type: string) {
     </p>
   </div>
 
-  <Alert v-for="type in types"
-    :key="type.type"
-    :type="type.type"
+  <Alert v-for="{ type, message } in alerts"
+    :key="type"
+    :type="type"
     :hasCloseButton="hasCloseButton"
     :style="style"
     @closed="handleClosed">
-    {{  type.message }}
+    {{  message }}
   </Alert>
 </template>
