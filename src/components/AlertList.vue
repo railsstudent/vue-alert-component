@@ -4,6 +4,23 @@ import Alert from './Alert.vue'
 
 const hasCloseButton = ref(true)
 const style = ref('');
+const types = ref([
+  { 
+    type: 'info',
+    message: 'New software update available.'
+  }, 
+  { 
+    type: 'success',
+    message: 'Your purchase has been confirmed!'
+  }, 
+  { 
+    type: 'warning',
+    message: 'Warning: Invalid email address!'
+  }, 
+  { 
+    type: 'error',
+    message: 'Error! Task failed successfully.'
+  }])
 
 // const closedNotification = ref<string[]>([])
 
@@ -33,33 +50,12 @@ function handleClosed(type: string) {
     </p>
   </div>
 
-  <Alert
-    type='info' 
-    :hasCloseButton="hasCloseButton" 
-    :style="style"
-    @closed="handleClosed"
-  >
-    New software update available.
-  </Alert>
-  <Alert
-    type='success' 
-    :hasCloseButton="hasCloseButton" 
+  <Alert v-for="type in types"
+    :key="type.type"
+    :type="type.type"
+    :hasCloseButton="hasCloseButton"
     :style="style"
     @closed="handleClosed">
-    Your purchase has been confirmed!
-  </Alert>
-  <Alert
-    type='warning' 
-    :hasCloseButton="hasCloseButton" 
-    :style="style"
-    @closed="handleClosed">
-    Warning: Invalid email address!
-  </Alert>
-  <Alert 
-    type='error' 
-    :hasCloseButton="hasCloseButton" 
-    :style="style"
-    @closed="handleClosed">
-    Error! Task failed successfully.
+    {{  type.message }}
   </Alert>
 </template>
