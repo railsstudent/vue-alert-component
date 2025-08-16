@@ -1,36 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue' 
+import { ref, computed } from 'vue' 
 import Alert from './Alert.vue'
+
+const props = defineProps<{
+  alerts: { type: string; message: string }[]
+}>()
 
 const hasCloseButton = ref(true)
 const style = ref('');
-const alerts = ref([
-  { 
-    type: 'info',
-    message: 'New software update available.'
-  }, 
-  { 
-    type: 'success',
-    message: 'Your purchase has been confirmed!'
-  }, 
-  { 
-    type: 'warning',
-    message: 'Warning: Invalid email address!'
-  }, 
-  { 
-    type: 'error',
-    message: 'Error! Task failed successfully.'
-  }])
+const closedNotification = ref<string[]>([])
 
-// const closedNotification = ref<string[]>([])
+const alerts = computed(() => props.alerts.filter((alert) => 
+  !closedNotification.value.includes(alert.type))
+)
 
 function handleClosed(type: string) {
-  alert(`${type} notification closed`)
+  closedNotification.value.push(type)
 }
 
-// function showNotification(type: string) {
-//   return !closedNotification.value.includes(type)
-// }
 </script>
 
 <template>
@@ -41,12 +28,18 @@ function handleClosed(type: string) {
     </p>
     <p>
       <span>Styles: </span>
-      <select type="checkbox" v-model="style">
+      <select class="select select-info mr-[0.5rem]" v-model="style">
         <option value="color">---</option>
         <option value="soft">Soft</option>
         <option value="outline">Outline</option>
         <option value="dash">Dash</option>
       </select>
+      <button
+        v-if="closedNotification.length > 0"
+        class="btn btn-primary" 
+        @click="closedNotification = []">
+        Reset Alerts
+      </button>
     </p>
   </div>
 
