@@ -7,17 +7,18 @@
     import CloseIcon from '@/icons/CloseIcon.vue'
     
     type Props = {
-        type?: string
+        type: string
         hasCloseButton?: boolean
+        style: string
     }
 
-    const { type = 'info', hasCloseButton = true } = defineProps<Props>()
+    const { type, hasCloseButton = true, style } = defineProps<Props>()
 
     const emits = defineEmits<{
         (e: 'closed', type: string): void
     }>()
 
-    const alertType = computed(() => {
+    const alertColor = computed(() => {
         return {
             info: 'alert-info',
             warning: 'alert-warning',
@@ -26,7 +27,16 @@
         }[type]
     })
 
-    const alertClasses = computed(() => `alert ${alertType.value || 'alert-info'}`)
+    const alertStyle = computed(() => {
+        return {
+            color: '',
+            dash: 'alert-dash',
+            soft: 'alert-soft',
+            outline: 'alert-outline'
+        }[style]
+    })
+
+    const alertClasses = computed(() => `alert ${alertColor.value} ${alertStyle.value}`)
     
     const iconComponent = computed(() => {
         switch (type) {
