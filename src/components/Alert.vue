@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import { computed, ref } from 'vue'
     import CloseIcon from '@/icons/CloseIcon.vue'
+    import { capitalize } from '@/capitalize';
     
     type Props = {
         type: string
@@ -33,7 +34,7 @@
     })
 
     const alertClasses = computed(() => `alert ${alertColor.value} ${alertStyle.value}`)
-    const icon = computed(() => `${type.charAt(0).toUpperCase() + type.slice(1)}Icon`)
+    const icon = computed(() => `${capitalize(type)}Icon`)
 
     const closed = ref(false)
 
