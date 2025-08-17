@@ -10,6 +10,7 @@ const props = defineProps<{
 
 const hasCloseButton = ref(true)
 const style = ref('');
+const direction = ref('horizontal')
 const closedNotification = ref<string[]>([])
 
 const alerts = computed(() => props.alerts.filter((alert) => 
@@ -48,6 +49,12 @@ function removeNotification(type: string) {
         <option value="outline">Outline</option>
         <option value="dash">Dash</option>
       </select>
+      {{ direction }}
+      <span>Direction: </span>
+      <select class="select select-info mr-[0.5rem]" v-model="direction">
+        <option value="horizontal">Horizontal</option>
+        <option value="vertical">Vertical</option>
+      </select>
     </p>
     <p class="mb-[0.75rem]">
       <button
@@ -73,6 +80,7 @@ function removeNotification(type: string) {
     :type="type"
     :hasCloseButton="hasCloseButton"
     :style="style"
+    :direction="direction"
     @closed="handleClosed">
     {{  message }}
   </Alert>

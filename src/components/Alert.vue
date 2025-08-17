@@ -7,9 +7,10 @@
         type: string
         hasCloseButton?: boolean
         style: string
+        direction: string
     }
 
-    const { type, hasCloseButton = true, style } = defineProps<Props>()
+    const { type, hasCloseButton = true, style, direction } = defineProps<Props>()
 
     const emits = defineEmits<{
         (e: 'closed', type: string): void
@@ -33,7 +34,14 @@
         }[style]
     })
 
-    const alertClasses = computed(() => `alert ${alertColor.value} ${alertStyle.value}`)
+    const alertDirection = computed(() => {
+        return {
+            horizontal: 'alert-horizontal',
+            vertical: 'alert-vertical',
+        }[direction]
+    })
+
+    const alertClasses = computed(() => `alert ${alertColor.value} ${alertStyle.value} ${alertDirection.value}`)
     const icon = computed(() => `${capitalize(type)}Icon`)
 
     const closed = ref(false)
