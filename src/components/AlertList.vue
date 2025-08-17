@@ -1,86 +1,61 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue' 
 import Alert from './Alert.vue'
-import { capitalize } from '@/capitalize'
-import OpenIcon from '@/icons/OpenIcon.vue'
+import AlertBar from './AlertBar.vue'
 
 const props = defineProps<{
   alerts: { type: string; message: string }[]
 }>()
 
 const hasCloseButton = ref(true)
-const style = ref('');
+const style = ref('color');
 const direction = ref('horizontal')
-const closedNotification = ref<string[]>([])
+const closedNotifications = ref<string[]>([])
+
+const alertConfig = computed(() => ({
+  style: style.value,
+  direction: direction.value,
+  hasCloseButton: hasCloseButton.value,
+}))
 
 const alerts = computed(() => props.alerts.filter((alert) => 
-  !closedNotification.value.includes(alert.type))
+  !closedNotifications.value.includes(alert.type))
 )
 
-function getBtnClass(type: string) {
-  return {
-      info: 'btn-info',
-      warning: 'btn-warning',
-      error: 'btn-error',
-      success: 'btn-success'
-  }[type]
-}
-
 function handleClosed(type: string) {
-  closedNotification.value.push(type)
+  closedNotifications.value.push(type)
 }
 
-function removeNotification(type: string) {
-  closedNotification.value = closedNotification.value.filter((t) => t !== type)
-}
+const config = ref({
+  styleLabel: "Alert styles:",
+  styles: [
+    { text: 'Default', value: 'color' },
+    { text: 'Soft', value: 'soft' },
+    { text: 'Outline', value: 'outline' },
+    { text: 'Dash', value: 'dash' }
+  ],
+  directionLabel: "Alert direction:",
+  directions: [
+    { text: 'Horizontal', value: 'horizontal' },
+    { text: 'Vertical', value: 'vertical' },
+  ]
+})
 </script>
 
 <template>
-  <div>
-    <p>
-      <span>Has close button? </span>
-      <input type="checkbox" v-model="hasCloseButton" />
-    </p>
-    <p class="mb-[0.75rem]">
-      <span>Styles: </span>
-      <select class="select select-info mr-[0.5rem]" v-model="style">
-        <option value="color">---</option>
-        <option value="soft">Soft</option>
-        <option value="outline">Outline</option>
-        <option value="dash">Dash</option>
-      </select>
-      {{ direction }}
-      <span>Direction: </span>
-      <select class="select select-info mr-[0.5rem]" v-model="direction">
-        <option value="horizontal">Horizontal</option>
-        <option value="vertical">Vertical</option>
-      </select>
-    </p>
-    <p class="mb-[0.75rem]">
-      <button
-        v-for="type in closedNotification"
-        :key="type"
-        class="mr-[0.5rem] btn"
-        :class="`${getBtnClass(type)}`"
-        @click="removeNotification(type)"
-      >
-        <OpenIcon />{{ capitalize(type) }}
-      </button>      
-      <button
-        v-if="closedNotification.length > 0"
-        class="btn btn-primary" 
-        @click="closedNotification = []">
-        Open all alerts
-      </button>
-    </p>
-  </div>
+  <AlertBar
+    :config="config"
+    v-model:hasCloseButton="hasCloseButton"
+    v-model:style="style"
+    v-model:direction="direction"
+    v-model:closedNotifications="closedNotifications"
+  />
 
   <Alert v-for="{ type, message } in alerts"
+    class="mb-[0.75rem]"
     :key="type"
     :type="type"
-    :hasCloseButton="hasCloseButton"
-    :style="style"
-    :direction="direction"
+    :alertConfig="alertConfig"
     @closed="handleClosed">
     {{  message }}
   </Alert>

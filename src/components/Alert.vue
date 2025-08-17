@@ -4,13 +4,15 @@
     import { capitalize } from '@/capitalize';
     
     type Props = {
+        alertConfig: {
+            hasCloseButton: boolean
+            style: string
+            direction: string
+        },
         type: string
-        hasCloseButton?: boolean
-        style: string
-        direction: string
     }
 
-    const { type, hasCloseButton = true, style, direction } = defineProps<Props>()
+    const { type, alertConfig } = defineProps<Props>()
 
     const emits = defineEmits<{
         (e: 'closed', type: string): void
@@ -31,14 +33,14 @@
             dash: 'alert-dash',
             soft: 'alert-soft',
             outline: 'alert-outline'
-        }[style]
+        }[alertConfig.style]
     })
 
     const alertDirection = computed(() => {
         return {
             horizontal: 'alert-horizontal',
             vertical: 'alert-vertical',
-        }[direction]
+        }[alertConfig.direction]
     })
 
     const alertClasses = computed(() => `alert ${alertColor.value} ${alertStyle.value} ${alertDirection.value}`)
@@ -56,7 +58,7 @@
   <div role="alert" :class="alertClasses" v-if="!closed">
     <component :is="icon" />
     <span><slot></slot></span>
-    <div v-if="hasCloseButton">
+    <div v-if="alertConfig.hasCloseButton">
         <button class="btn btn-sm btn-primary" alt="Close button" @click="closeAlert">
             <CloseIcon />
         </button>
