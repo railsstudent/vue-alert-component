@@ -43,6 +43,8 @@ const config = ref({
 </script>
 
 <template>
+  <h2>Alert Components (Vue ver.)</h2>
+
   <AlertBar
     :config="config"
     v-model:hasCloseButton="hasCloseButton"
