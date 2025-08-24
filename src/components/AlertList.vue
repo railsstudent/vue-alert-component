@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue' 
-import Alert from './Alert.vue'
-import AlertBar from './AlertBar.vue'
+import type { AlertType } from '@/types/alert-type';
+import { computed, ref } from 'vue';
+import Alert from './Alert.vue';
+import AlertBar from './AlertBar.vue';
 
 const props = defineProps<{
-  alerts: { type: string; message: string }[]
+  alerts: { type: AlertType; message: string }[]
 }>()
 
 const hasCloseButton = ref(true)
