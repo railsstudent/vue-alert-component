@@ -36,6 +36,10 @@ function removeNotification(type: string) {
 function clearAllNotifications() {
   closedNotifications.value = []
 }
+
+function hasClosedNotifications() {
+  return closedNotifications.value.length > 0
+}
 </script>
 
 <template>
@@ -66,7 +70,7 @@ function clearAllNotifications() {
         <OpenIcon />{{ capitalize(type) }}
       </button>    
       <button
-        v-if="closedNotifications.length > 0"
+        v-if="hasClosedNotifications()"
         class="btn btn-primary" 
         @click="clearAllNotifications">
         Open all alerts
