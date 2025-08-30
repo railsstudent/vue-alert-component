@@ -32,6 +32,10 @@ function getBtnClass(type: string) {
 function removeNotification(type: string) {
   closedNotifications.value = closedNotifications.value.filter((t) => t !== type)
 }
+
+function clearAllNotifications() {
+  closedNotifications.value = []
+}
 </script>
 
 <template>
@@ -64,7 +68,7 @@ function removeNotification(type: string) {
       <button
         v-if="closedNotifications.length > 0"
         class="btn btn-primary" 
-        @click="closedNotifications = []">
+        @click="clearAllNotifications">
         Open all alerts
       </button>
     </p>
