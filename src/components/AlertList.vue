@@ -3,6 +3,7 @@ import type { AlertType } from '@/types/alert-type';
 import { computed, ref } from 'vue';
 import Alert from './Alert.vue';
 import AlertBar from './AlertBar.vue';
+import { useNotifications } from '@/composables/useNotification'
 
 const props = defineProps<{
   alerts: { type: AlertType; message: string }[]
@@ -11,7 +12,7 @@ const props = defineProps<{
 const hasCloseButton = ref(true)
 const style = ref('color');
 const direction = ref('horizontal')
-const closedNotifications = ref<string[]>([])
+const { closedNotifications, add } = useNotifications()
 
 const alertConfig = computed(() => ({
   style: style.value,
@@ -22,10 +23,6 @@ const alertConfig = computed(() => ({
 const alerts = computed(() => props.alerts.filter((alert) => 
   !closedNotifications.value.includes(alert.type))
 )
-
-function handleClosed(type: string) {
-  closedNotifications.value.push(type)
-}
 
 const config = ref({
   styleLabel: "Alert styles:",
@@ -51,7 +48,6 @@ const config = ref({
     v-model:hasCloseButton="hasCloseButton"
     v-model:style="style"
     v-model:direction="direction"
-    v-model:closedNotifications="closedNotifications"
   />
 
   <Alert v-for="{ type, message } in alerts"
@@ -59,7 +55,7 @@ const config = ref({
     :key="type"
     :type="type"
     :alertConfig="alertConfig"
-    @closed="handleClosed">
+    @closed="add">
     {{  message }}
   </Alert>
 </template>

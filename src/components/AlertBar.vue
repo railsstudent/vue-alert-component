@@ -2,6 +2,7 @@
 import { capitalize } from '@/capitalize'
 import OpenIcon from '@/icons/OpenIcon.vue'
 import AlertDropdown from '@/components/AlertDropdown.vue'
+import { useNotifications } from '@/composables/useNotification'
 
 type Props = {
     config: { 
@@ -18,8 +19,9 @@ const { config } = props
 const hasCloseButton = defineModel<boolean>('hasCloseButton', { default: true })
 const style = defineModel<string>('style', { default: 'color' })
 const direction = defineModel<string>('direction', { default: 'horizontal' })
-const closedNotifications = defineModel<string[]>('closedNotifications', { default: [] })
 
+const { closedNotifications, clearAll, isNonEmpty, remove } = useNotifications()
+ 
 function getBtnClass(type: string) {
   return {
       info: 'btn-info',
@@ -27,18 +29,6 @@ function getBtnClass(type: string) {
       error: 'btn-error',
       success: 'btn-success'
   }[type]
-}
-
-function removeNotification(type: string) {
-  closedNotifications.value = closedNotifications.value.filter((t) => t !== type)
-}
-
-function clearAllNotifications() {
-  closedNotifications.value = []
-}
-
-function hasClosedNotifications() {
-  return closedNotifications.value.length > 0
 }
 </script>
 
@@ -55,14 +45,14 @@ function hasClosedNotifications() {
         :key="type"
         class="mr-[0.5rem] btn"
         :class="`${getBtnClass(type)}`"
-        @click="removeNotification(type)"
+        @click="remove(type)"
       >
         <OpenIcon />{{ capitalize(type) }}
       </button>    
       <button
-        v-if="hasClosedNotifications()"
+        v-if="isNonEmpty()"
         class="btn btn-primary" 
-        @click="clearAllNotifications">
+        @click="clearAll">
         Open all alerts
       </button>
     </p>
