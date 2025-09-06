@@ -37,8 +37,8 @@ function getBtnClass(type: string) {
     <p class="mb-[0.75rem]">
       <span>Has close button? </span>
       <input type="checkbox" class="mr-[0.5rem]" v-model="hasCloseButton" />
-      <AlertDropdown :label="config.styleLabel" :styles="config.styles" v-model:selectedValue="style" />
-      <AlertDropdown :label="config.directionLabel" :styles="config.directions" v-model:selectedValue="direction" />
+      <AlertDropdown :label="config.styleLabel" :items="config.styles" v-model:selectedValue="style" />
+      <AlertDropdown :label="config.directionLabel" :items="config.directions" v-model:selectedValue="direction" />
     </p>
     <p class="mb-[0.75rem]">
       <button v-for="type in closedNotifications"

@@ -2,10 +2,10 @@
 
 type Props = {
     label: string
-    styles: { value: string, text: string }[]
+    items: { value: string, text: string }[]
 }
 
-const { label, styles } = defineProps<Props>()
+const { label, items } = defineProps<Props>()
 const selectedValue = defineModel<string>('selectedValue')
 
 </script>
@@ -13,7 +13,7 @@ const selectedValue = defineModel<string>('selectedValue')
 <template>
     <span>{{ label }}&nbsp;&nbsp;</span>
     <select class="select select-info mr-[0.5rem]" v-model="selectedValue">
-        <option v-for="{value, text} in styles" :key="value" :value="value">
+        <option v-for="{value, text} in items" :key="value" :value="value">
             {{ text }}
         </option>
     </select>
