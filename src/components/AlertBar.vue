@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue' 
 import { capitalize } from '@/capitalize'
 import OpenIcon from '@/icons/OpenIcon.vue'
+import AlertDropdown from '@/components/AlertDropdown.vue'
 
 type Props = {
     config: { 
@@ -47,18 +47,8 @@ function hasClosedNotifications() {
     <p class="mb-[0.75rem]">
       <span>Has close button? </span>
       <input type="checkbox" class="mr-[0.5rem]" v-model="hasCloseButton" />
-      <span>{{ config.styleLabel }}&nbsp;&nbsp;</span>
-      <select class="select select-info mr-[0.5rem]" v-model="style">
-        <option v-for="{value, text} in config.styles" :key="value" :value="value">
-          {{ text }}
-        </option>
-      </select>
-      <span>{{ config.directionLabel }}&nbsp;&nbsp;</span>
-      <select class="select select-info mr-[0.5rem]" v-model="direction">
-        <option v-for="{ value, text } in config.directions" :key="value" :value="value">
-          {{ text }}
-        </option>
-      </select>
+      <AlertDropdown :label="config.styleLabel" :styles="config.styles" v-model:selectedValue="style" />
+      <AlertDropdown :label="config.directionLabel" :styles="config.directions" v-model:selectedValue="direction" />
     </p>
     <p class="mb-[0.75rem]">
       <button v-for="type in closedNotifications"
