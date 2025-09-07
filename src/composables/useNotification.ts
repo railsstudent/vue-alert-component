@@ -8,7 +8,7 @@ export function useNotifications() {
         closedNotifications.value = closedNotifications.value.filter((t) => t !== type)
     }
       
-    function clearAll() {
+    function removeAll() {
         closedNotifications.value = []
     }
       
@@ -23,7 +23,7 @@ export function useNotifications() {
     return {
         closedNotifications: readonly(closedNotifications),
         remove,
-        clearAll,
+        removeAll,
         isNonEmpty,
         add
     }

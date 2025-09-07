@@ -20,7 +20,7 @@ const hasCloseButton = defineModel<boolean>('hasCloseButton', { default: true })
 const style = defineModel<string>('style', { default: 'color' })
 const direction = defineModel<string>('direction', { default: 'horizontal' })
 
-const { closedNotifications, clearAll, isNonEmpty, remove } = useNotifications()
+const { closedNotifications, removeAll, isNonEmpty, remove } = useNotifications()
  
 function getBtnClass(type: string) {
   return {
@@ -52,7 +52,7 @@ function getBtnClass(type: string) {
       <button
         v-if="isNonEmpty()"
         class="btn btn-primary" 
-        @click="clearAll">
+        @click="removeAll">
         Open all alerts
       </button>
     </p>
